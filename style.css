@@ -31,22 +31,33 @@
   --ease-spring: cubic-bezier(.34,1.56,.64,1);
 }
 
-html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #fff; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: #000; color: #fff;
+  /* 锁死视口，禁用移动端橡皮筋滚动 */
+  position: fixed;
+  inset: 0;
+  overscroll-behavior: none;
+  touch-action: none;
+}
 body { font-family: var(--font-cn); user-select: none; -webkit-font-smoothing: antialiased; }
 
-/* ---------- 1640×348 固定画布 + 自适应缩放 ---------- */
+/* ---------- 1640×348 固定画布 + 自适应缩放（绝对居中） ---------- */
 .fit {
   position: fixed; inset: 0;
-  display: flex; align-items: center; justify-content: center;
   background: #000;
+  overflow: hidden;
 }
 .stage {
-  position: relative;
+  position: absolute;
+  left: 50%; top: 50%;
   width: var(--w); height: var(--h);
   background: #000;
   overflow: hidden;
-  transform: scale(var(--scale, 1));
-  transform-origin: center;
+  /* scale 围绕几何中心，translate -50% 自身让中心对齐窗口中心 */
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  transform-origin: center center;
   box-shadow: 0 0 0 1px #111, 0 30px 100px -40px rgba(255,153,0,.2);
 }
 

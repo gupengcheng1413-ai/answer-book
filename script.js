@@ -25,14 +25,16 @@
   const stage = document.querySelector('.stage');
   const fitWrap = document.querySelector('.fit');
 
-  // ---------- 视口缩放：1640×348 → 自适应窗口 ----------
+  // ---------- 视口缩放：1640×348 → 自适应窗口（移动端竖屏自动等比缩放居中） ----------
   const fitToViewport = () => {
     const sw = window.innerWidth;
     const sh = window.innerHeight;
-    const s = Math.min(sw / 1640, sh / 348, 1);
+    // 去掉 ≤1 的上限：手机竖屏 sw 远小于 1640，s 必然 < 1，长条 demo 居中显示，左右留黑边
+    const s = Math.min(sw / 1640, sh / 348);
     stage.style.setProperty('--scale', s);
   };
   window.addEventListener('resize', fitToViewport);
+  window.addEventListener('orientationchange', fitToViewport);
   fitToViewport();
 
   // ---------- 状态切换 ----------
