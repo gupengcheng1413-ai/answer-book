@@ -2,6 +2,15 @@
 
 依据 Figma 设计稿像素级还原的「答案之书」前端 demo，目标载体为 5.6 寸长条副屏（**1640 × 348**），含完整的状态流转与原创动效。
 
+## 两个版本
+
+| 版本 | 过场动效 | 在线预览 |
+|---|---|---|
+| **v1** | 沙化吹散（原文案被风沙吹走 → 答案浮现） | https://gupengcheng1413-ai.github.io/answer-book/ |
+| **v2** | 连翻 3 页书（仪式感更扣"答案之书"主题） | https://gupengcheng1413-ai.github.io/answer-book/v2/ |
+
+v2 共享 `assets/` 资源目录；"再问一次" 改为返回 question 页让用户重新走完整流程。
+
 ## 启动
 
 任选其一：
@@ -9,7 +18,8 @@
 ```bash
 # 推荐：起本地静态服务（避免某些字体/资源跨域问题）
 cd /home/pcgu3/answer-book && python3 -m http.server 8080
-# 然后浏览器打开  http://localhost:8080/
+# 然后浏览器打开  http://localhost:8080/        ← v1
+# 或者          http://localhost:8080/v2/     ← v2
 
 # 或者直接双击 index.html
 xdg-open index.html
