@@ -151,6 +151,9 @@
         ctaLabel.textContent = `再问一次（${MAX_ASKS}/${MAX_ASKS}）`;
         setState('depleted');
         break;
+      case '5':
+        setState('loading');
+        break;
       case 'r':
       case 'R':
         reset();

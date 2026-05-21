@@ -32,42 +32,91 @@
         <div class="card card--ghost"></div>
       </section>
 
-      <!-- ========== S2 提问页 ========== -->
-      <section id="screen-question" class="screen screen--question" aria-hidden="true">
-        <div class="books books--closed">
-          <!-- Figma 图层顺序（从底到顶，按 Rectangle ID）：
-               49 → 51 → 47 → 55(side-back) → 52(small-back) → 50(small-front)
-               → 56(small-back-overlay) → 54(border, 用户调到 57 下方)
-               → 57(small-front-overlay) → 48(side-front, 用户调到最前) -->
-          <img class="book book--stack-1"    src="../assets/book-stack-1.svg" alt="" />
-          <img class="book book--stack-2"    src="../assets/book-stack-2.svg" alt="" />
-          <img class="book book--cover"      src="../assets/book-cover.svg" alt="" />
-          <img class="book book--side-back"  src="../assets/book-side-back.svg" alt="" />
-          <img class="book book--small-back" src="../assets/book-small-back.svg" alt="" />
-          <img class="book book--small-front" src="../assets/book-small-front.svg" alt="" />
-          <img class="book book--small-back-overlay" src="../assets/book-small-back-overlay.svg" alt="" />
-          <div class="book__border" aria-hidden="true"></div>
-          <img class="book book--small-front-overlay" src="../assets/book-small-front.svg" alt="" />
-          <img class="book book--side-front"  src="../assets/book-side-front.svg" alt="" />
+      <!-- ========== 跨态魔法书（question/loading/answer/depleted 共享） ========== -->
+      <div class="bookx" aria-hidden="true">
+        <!-- 书下方光晕，闭合时强、打开时弱 -->
+        <div class="bookx__halo"></div>
+        <!-- 闭合态厚度（spine = 左侧书脊；edge = 上下右三条页边白条），打开后 fade -->
+        <div class="bookx__spine"></div>
+        <div class="bookx__edge bookx__edge--top"></div>
+        <div class="bookx__edge bookx__edge--bottom"></div>
+        <div class="bookx__edge bookx__edge--right"></div>
+        <!-- 打开后左半页底色（已读完区域），闭合态隐藏 -->
+        <div class="bookx__back"></div>
+
+        <!-- 左半页装饰：仅 answer/depleted 态显示，魔法符印 -->
+        <div class="bookx__lpage" aria-hidden="true">
+          <div class="bookx__lpage-center">
+            <span class="bookx__lpage-ring"></span>
+            <svg class="bookx__lpage-rune" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="runeGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#d4a65a" />
+                  <stop offset="70%"  stop-color="#8b5a1f" />
+                  <stop offset="100%" stop-color="#d4a65a" />
+                </linearGradient>
+              </defs>
+              <!-- ⟡ 风格的四角凹边星，所有路径都围绕 (0,0) 对称：几何中心 = 视觉中心 -->
+              <path d="M 0,-26 C 4,-9 9,-4 26,0 C 9,4 4,9 0,26 C -4,9 -9,4 -26,0 C -9,-4 -4,-9 0,-26 Z"
+                    fill="url(#runeGrad)" />
+            </svg>
+          </div>
+          <span class="bookx__lpage-star bookx__lpage-star--tl">✦</span>
+          <span class="bookx__lpage-star bookx__lpage-star--tr">✦</span>
+          <span class="bookx__lpage-star bookx__lpage-star--bl">✦</span>
+          <span class="bookx__lpage-star bookx__lpage-star--br">✦</span>
         </div>
 
-        <div class="title-glow" aria-hidden="true"></div>
-        <img class="title-img" src="../assets/answer-book-title.svg" alt="答案之书" />
-        <span class="title-spark title-spark--1" aria-hidden="true"></span>
-        <span class="title-spark title-spark--2" aria-hidden="true"></span>
-        <span class="title-spark title-spark--3" aria-hidden="true"></span>
-        <img class="title-star" src="../assets/star-tiny.svg" alt="" />
-        <img class="dot-glow dot-glow--q" src="../assets/dot-glow.svg" alt="" />
+        <!-- 5 张可翻页：page-1 在最上（合着时即封面），翻完后停在 -180° -->
+        <div class="bookx__page bookx__page--5">
+          <div class="bookx__face bookx__face--front"></div>
+          <div class="bookx__face bookx__face--back"></div>
+        </div>
+        <div class="bookx__page bookx__page--4">
+          <div class="bookx__face bookx__face--front"></div>
+          <div class="bookx__face bookx__face--back"></div>
+        </div>
+        <div class="bookx__page bookx__page--3">
+          <div class="bookx__face bookx__face--front"></div>
+          <div class="bookx__face bookx__face--back"></div>
+        </div>
+        <div class="bookx__page bookx__page--2">
+          <div class="bookx__face bookx__face--front"></div>
+          <div class="bookx__face bookx__face--back"></div>
+        </div>
+        <div class="bookx__page bookx__page--1">
+          <div class="bookx__face bookx__face--front bookx__face--cover">
+            <span class="bookx__corner bookx__corner--tl" aria-hidden="true"></span>
+            <span class="bookx__corner bookx__corner--tr" aria-hidden="true"></span>
+            <span class="bookx__corner bookx__corner--bl" aria-hidden="true"></span>
+            <span class="bookx__corner bookx__corner--br" aria-hidden="true"></span>
+            <span class="bookx__sigil bookx__sigil--t" aria-hidden="true">✧ ✦ ✧</span>
+            <span class="bookx__title">答案之书</span>
+            <span class="bookx__sigil bookx__sigil--b" aria-hidden="true">✧ ✦ ✧</span>
+            <span class="bookx__rune" aria-hidden="true">⟡</span>
+            <span class="bookx__shine" aria-hidden="true"></span>
+          </div>
+          <div class="bookx__face bookx__face--back"></div>
+        </div>
 
-        <ul class="hints" aria-hidden="true">
-          <li class="hint hint--1">这一年的努力是否值得</li>
-          <li class="hint hint--2">这次能考好吗</li>
-          <li class="hint hint--3">会是一场美妙的旅行吗？</li>
-        </ul>
+        <!-- 环绕火星粒子（魔法感）-->
+        <span class="bookx__spark bookx__spark--1" aria-hidden="true"></span>
+        <span class="bookx__spark bookx__spark--2" aria-hidden="true"></span>
+        <span class="bookx__spark bookx__spark--3" aria-hidden="true"></span>
+        <span class="bookx__spark bookx__spark--4" aria-hidden="true"></span>
+        <span class="bookx__spark bookx__spark--5" aria-hidden="true"></span>
+        <span class="bookx__spark bookx__spark--6" aria-hidden="true"></span>
 
-        <img class="float-star float-star--lg" src="../assets/star-large.svg" alt="" />
-        <img class="float-star float-star--md" src="../assets/star-medium.svg" alt="" />
+        <!-- 答案区：独立于 page，落在书的右半页；翻完后显示 -->
+        <div class="bookx__answer">
+          <h2 class="answer__title" id="answerTitle">不要犹豫</h2>
+          <p class="answer__sub" id="answerSub">Do not worry</p>
+          <p class="answer__depleted">今天的魔法已经用完啦<br />明天再来和宇宙对话吧</p>
+        </div>
+      </div>
 
+      <!-- ========== S2 提问页（仅右侧按钮） ========== -->
+      <section id="screen-question" class="screen screen--question" aria-hidden="true">
         <div class="prompt">
           <p class="prompt__text">心中默念你的问题</p>
           <button class="cta" type="button" data-action="find-answer">
@@ -79,34 +128,9 @@
         </div>
       </section>
 
-      <!-- ========== S3 答案 / S4 次数耗尽（共用） ========== -->
+      <!-- ========== S3 答案 / S4 次数耗尽（仅右侧按钮 + 关闭） ========== -->
       <section id="screen-answer" class="screen screen--answer" aria-hidden="true">
-        <div class="books books--open">
-          <!-- 图层（从底到顶）：stack-1 → stack-2 → robot(被 cover 盖底) → cover → content-frame
-               → side-back(55) → small-back → small-front → side-front(48 最前) -->
-          <img class="book book--stack-1"    src="../assets/book-stack-1.svg" alt="" />
-          <img class="book book--stack-2"    src="../assets/book-stack-2.svg" alt="" />
-          <img class="robot" src="../assets/robot.png" alt="" />
-          <img class="book book--cover"      src="../assets/book-cover.svg" alt="" />
-          <img class="book book--content-frame" src="../assets/content-frame.svg" alt="" />
-          <img class="book book--side-back"  src="../assets/book-side-back.svg" alt="" />
-          <img class="book book--small-back" src="../assets/book-small-back.svg" alt="" />
-          <img class="book book--small-front" src="../assets/book-small-front.svg" alt="" />
-          <img class="book book--side-front" src="../assets/book-side-front.svg" alt="" />
-        </div>
-
-        <div class="answer">
-          <h2 class="answer__title" id="answerTitle">不要犹豫</h2>
-          <p class="answer__sub" id="answerSub">Do not worry</p>
-        </div>
-
-        <img class="float-star float-star--lg float-star--lg-a" src="../assets/star-large.svg" alt="" />
-        <img class="float-star float-star--md float-star--md-a" src="../assets/star-medium.svg" alt="" />
-        <img class="float-star float-star--m2" src="../assets/star-medium-2.svg" alt="" />
-        <img class="dot-glow dot-glow--a" src="../assets/dot-glow.svg" alt="" />
-
         <div class="prompt prompt--answer">
-          <p class="prompt__text depleted-only">今天的魔法已经用完啦<br />明天再来和宇宙对话吧</p>
           <button class="cta cta--again" type="button" data-action="ask-again">
             <span class="cta__halo" aria-hidden="true"></span>
             <span class="cta__star cta__star--l" aria-hidden="true"></span>
@@ -120,25 +144,9 @@
         </button>
       </section>
 
-      <!-- ========== S2→S3 过场动画层（连翻 3 页书） ========== -->
-      <div class="fx" id="fx" aria-hidden="true">
-        <div class="page-flip page-flip--1">
-          <div class="page-flip__face page-flip__face--front"></div>
-          <div class="page-flip__face page-flip__face--back"></div>
-        </div>
-        <div class="page-flip page-flip--2">
-          <div class="page-flip__face page-flip__face--front"></div>
-          <div class="page-flip__face page-flip__face--back"></div>
-        </div>
-        <div class="page-flip page-flip--3">
-          <div class="page-flip__face page-flip__face--front"></div>
-          <div class="page-flip__face page-flip__face--back"></div>
-        </div>
-      </div>
-
       <!-- 调试提示 -->
       <p class="debug-hint" aria-hidden="true">
-        <span>键盘 1/2/3/4 切换状态 · R 重置</span>
+        <span>键盘 1/2/3/4 切换状态 · R 重置 · 5 卡 loading</span>
       </p>
     </div>
   </div>
